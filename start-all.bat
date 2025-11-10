@@ -112,7 +112,7 @@ timeout /t 5 /nobreak >nul
 echo Starting Frontend...
 cd frontend\frontend
 call npm install
-start "Frontend" cmd /c "npm run dev"
+start "Frontend" cmd /c "npm start"
 cd ..\..
 
 echo All services have been started!

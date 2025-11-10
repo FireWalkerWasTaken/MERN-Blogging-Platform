@@ -9,12 +9,9 @@ export default function CreatePost() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Check for token on component mount
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    }
+    if (!token) navigate('/login');
   }, [navigate]);
 
   const handleChange = (e) => {
@@ -27,7 +24,7 @@ export default function CreatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    
+
     if (!token) {
       setError('Please login to create a post');
       navigate('/login');
@@ -49,35 +46,51 @@ export default function CreatePost() {
       if (response.ok) {
         navigate('/');
       } else if (response.status === 401) {
-        // Token expired or invalid
         localStorage.removeItem('token');
         setError('Session expired. Please login again.');
         navigate('/login');
       } else {
         setError(data.message || 'Failed to create post');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to connect to server');
     }
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-      <h2>Create Post</h2>
+    <div
+      style={{
+        maxWidth: '650px',
+        margin: '50px auto',
+        padding: '30px',
+        background: '#ffffff',
+        borderRadius: '10px',
+        border: '1px solid #e5e7eb',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.06)'
+      }}
+    >
+      <h2 style={{ marginBottom: '15px', fontWeight: 600, fontSize: '26px' }}>Create New Post</h2>
+
       {error && (
-        <p style={{ 
-          color: 'red', 
-          padding: '10px', 
-          backgroundColor: '#ffebee',
-          borderRadius: '4px',
-          marginBottom: '20px'
-        }}>
+        <p
+          style={{
+            color: '#b91c1c',
+            padding: '12px',
+            backgroundColor: '#fee2e2',
+            border: '1px solid #fecaca',
+            borderRadius: '6px',
+            marginBottom: '20px'
+          }}
+        >
           {error}
         </p>
       )}
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label htmlFor="title">Title:</label>
+
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+        
+        {/* Title Field */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <label htmlFor="title" style={{ fontWeight: 500 }}>Title</label>
           <input
             id="title"
             type="text"
@@ -86,45 +99,62 @@ export default function CreatePost() {
             onChange={handleChange}
             required
             style={{
-              padding: '8px',
-              fontSize: '16px',
-              borderRadius: '4px',
-              border: '1px solid #ccc'
+              padding: '10px 12px',
+              fontSize: '15px',
+              borderRadius: '6px',
+              border: '1px solid #cbd5e1',
+              outline: 'none',
+              transition: 'border-color 0.2s ease',
             }}
+            onFocus={(e) => (e.target.style.borderColor = '#2563eb')}
+            onBlur={(e) => (e.target.style.borderColor = '#cbd5e1')}
           />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label htmlFor="content">Content:</label>
+
+        {/* Content Field */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <label htmlFor="content" style={{ fontWeight: 500 }}>Content</label>
           <textarea
             id="content"
             name="content"
             value={formData.content}
             onChange={handleChange}
             required
-            rows="6"
+            rows="7"
             style={{
-              padding: '8px',
-              fontSize: '16px',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              resize: 'vertical'
+              padding: '10px 12px',
+              fontSize: '15px',
+              borderRadius: '6px',
+              border: '1px solid #cbd5e1',
+              resize: 'vertical',
+              outline: 'none',
+              transition: 'border-color 0.2s ease',
             }}
+            onFocus={(e) => (e.target.style.borderColor = '#2563eb')}
+            onBlur={(e) => (e.target.style.borderColor = '#cbd5e1')}
           />
         </div>
-        <button 
+
+        {/* Submit Button */}
+        <button
           type="submit"
           style={{
-            padding: '10px 20px',
+            padding: '12px 0',
             fontSize: '16px',
-            backgroundColor: '#1976d2',
+            backgroundColor: '#2563eb',
             color: 'white',
             border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontWeight: 500,
+            transition: 'background-color 0.2s ease'
           }}
+          onMouseEnter={(e) => (e.target.style.backgroundColor = '#1d4ed8')}
+          onMouseLeave={(e) => (e.target.style.backgroundColor = '#2563eb')}
         >
-          Create Post
+          Publish Post
         </button>
+
       </form>
     </div>
   );
